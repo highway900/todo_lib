@@ -5,6 +5,7 @@ use chrono::{Local, NaiveDate};
 use crate::todotxt::utils;
 
 #[derive(PartialEq, Debug, Clone)]
+#[cfg_attr(feature = "serde", derive(serde::Serialize, serde::Deserialize))]
 pub struct Task {
     pub subject: String,
     pub priority: u8,
@@ -12,10 +13,15 @@ pub struct Task {
     pub contexts: Vec<String>,
     pub projects: Vec<String>,
     pub tags: HashMap<String, String>,
+    #[cfg_attr(feature = "serde", serde(flatten, skip_serializing_if = "Option::is_none", default))]
     pub create_date: Option<NaiveDate>,
+    #[cfg_attr(feature = "serde", serde(flatten, skip_serializing_if = "Option::is_none", default))]
     pub finish_date: Option<NaiveDate>,
+    #[cfg_attr(feature = "serde", serde(flatten, skip_serializing_if = "Option::is_none", default))]
     pub due_date: Option<NaiveDate>,
+    #[cfg_attr(feature = "serde", serde(flatten, skip_serializing_if = "Option::is_none", default))]
     pub threshold_date: Option<NaiveDate>,
+    #[cfg_attr(feature = "serde", serde(skip_serializing_if = "Option::is_none", default))]
     pub recurrence: Option<utils::Recurrence>,
 }
 
